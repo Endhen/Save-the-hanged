@@ -14,8 +14,8 @@ const WordBoard = ({word, letterDiscovered}) => {
 }
 
 WordBoard.propTypes = {
-    word: PropTypes.array,
-    letterDiscovered: PropTypes.array,
+    word: PropTypes.array.isRequired,
+    letterDiscovered: PropTypes.array.isRequired,
 }
 
 export default WordBoard

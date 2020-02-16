@@ -1,65 +1,113 @@
 import React, { Component } from 'react';
 
-import Key from './Key'
+import KeyBoard from './KeyBoard'
 import WordBoard from './WordBoard'
+import InfoBar from './InfoBar'
+import MessageBox from './MessageBox'
+import Hanged from './Hanged'
 
 import './App.css'
 
-const WORD_COLLECTION = ['Souris', 'Table', 'Shampoo']
+const WORD_COLLECTION = [
+    'SOURIS', 
+    'TABLE', 
+    'ORANGE',
+    'RATELIER',
+    'AVION',
+    'VACANCIER',
+    'CIDRE',
+    'SPIRALE',
+    'PORTE',
+    'GATEAU',
+    'VIRAGE',
+    'RAVIOLIS',
+    'KARMA',
+]
+const MARTYRS = [
+    "Jim",
+    "John Doe",
+    "Richard Roe",
+    "Mr. Smith",
+    "Mr Duran"
+]
 
 class App extends Component {
-    state = {
-        attempts: 0,
-        trials: 10,
-        word: this.randomPick(WORD_COLLECTION).toUpperCase().split(''),
-        letterUsed: [],
-        letterDiscovered: []
+    constructor() {
+        super()
+        this.state = this.getInitalState();
+    }
+
+    getInitalState() {
+        return {
+            attempts: 0,
+            trials: 10,
+            word: this.randomPick(WORD_COLLECTION),
+            martyr: this.randomPick(MARTYRS),
+            letterUsed: [],
+            letterDiscovered: [],
+            message: 'Let\'s begin !',
+            over: false
+        }
     }
 
     randomPick(wordSet) {
-        return wordSet[0]
+        let number = Math.floor((Math.random() * wordSet.length));
+        return wordSet[number].split('')
     }
 
-    hasBeenUsed(index) {
+    // auto binding
+    hasBeenUsed = index => {
         return this.state.letterUsed.includes(index)
     }
 
     // arrow func for autobinding
     compare = letter => {
-        let {word, letterDiscovered, letterUsed} = this.state
+        let {word, letterDiscovered, letterUsed, message, over} = this.state
         let matchedLetter = word.find(element => element === letter)
-
-        if (this.hasBeenUsed(letter)) {
-            console.log('letter already used !')
-            return
-        } else {
-            if (matchedLetter === undefined) {
-                console.log('Miss !')
+        
+        if (!over) {
+            if (this.hasBeenUsed(letter)) {
+                this.setState({message: 'Letter already used !'})
+                return
             } else {
-                console.log('Found !', matchedLetter)
-                letterDiscovered.push(letter)
+                if (matchedLetter === undefined) {
+                    message = 'Miss !'
+                } else {
+                    message = 'Found ! ' + matchedLetter
+                    letterDiscovered.push(letter)
+                }
+                letterUsed.push(letter)
             }
-            letterUsed.push(letter)
+    
+            this.isGameOver(letterDiscovered, letterUsed, message)
         }
-
-        this.isGameOver(letterDiscovered, letterUsed)
     }
 
-    isGameOver(letterDiscovered, letterUsed) {
-        let {attempts, trials} = this.state
-        attempts += 1
+    isGameOver = (letterDiscovered, letterUsed, message = '') => {
+        let {attempts, trials, word, martyr} = this.state
 
         if (this.isWordDiscovered(letterDiscovered)) {
-            console.log('You Win')
-        } else if (attempts === trials) {
-            console.log('Game Over')
+            this.setState(
+                {message: `You saved ${martyr.join('')} ! (for now)`, 
+                over: true, 
+                attempts: attempts})
+        } else if (attempts === trials-1) {
+            message = 'Game Over'
+            this.setState(
+                {message: `RIP ${martyr.join('')} ! The word was ${word.join('')}`, 
+                over: true, 
+                attempts: 10})
+            return true
+        } else {
+            attempts = letterUsed.length
+            this.setState({
+                attempts: attempts,
+                letterUsed: letterUsed,
+                letterDiscovered: letterDiscovered,
+                message: message,
+            })
+            return false
         }
-
-        this.setState({
-            attempts: attempts,
-            letterUsed: letterUsed,
-            letterDiscovered: letterDiscovered
-        })
     }
 
     isWordDiscovered(letterDiscovered) {
@@ -77,22 +125,25 @@ class App extends Component {
         return !(discovered.includes(false)||discovered.length === 0)
     }
 
+    reset = () => {
+        this.setState( this.getInitalState())
+    }
+
     render() {
-        const ALPHABET = 'AZERTYUIOPQSDFGHJKLMWXCVBN'.split('')
-        let {word, letterDiscovered} = this.state
+        let {word, letterDiscovered, trials, attempts, message, over} = this.state
         return (
             <div className="game">
-                <WordBoard word={word} letterDiscovered={letterDiscovered}/>
-                <div className="keyboard">
-                    {ALPHABET.map((letter) => (
-                        <Key 
-                            letter={letter} 
-                            key={letter}
-                            used={this.hasBeenUsed(letter)} 
-                            compare={this.compare}
-                        />
-                    ))}
-                </div>
+                <InfoBar trials={trials} attempts={attempts} reset={this.reset} />
+                <Hanged attempts={attempts}/>
+                <WordBoard word={word} letterDiscovered={letterDiscovered} />
+                <MessageBox message={message}/>
+                {
+                    over?
+                        <div className="gameover">
+                            <button onClick={this.reset}>Restart Party</button>
+                        </div>:
+                        <KeyBoard compare={this.compare} hasBeenUsed={this.hasBeenUsed} />
+                }   
             </div>
         )
     }

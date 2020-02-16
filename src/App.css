@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap');
+
+:root {
+    --color1:rgb(122, 122, 148);
+    --color2:rgb(194, 194, 212);
+}
+
+h1 {
+    margin: 0;
+    color: var(--color1);
+    font-size: 20px;
+    font-family: 'Permanent Marker', cursive;
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #676767;
+}
 
 .game {
     display: flex;
@@ -15,10 +33,10 @@
 }
 
 .wordboard {
-    height: 100px;
+    max-height: 100px;
     border-radius: 5px;
     margin: 5px;
-    background-color: rgb(194, 194, 212);
+    background-color: var(--color2);
 }
 
 .case {
@@ -31,19 +49,55 @@
     margin: 5px;
 
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
 
     justify-content: center;
     align-items: center;
 
-    background-color: rgb(122, 122, 148);
+    background-color: var(--color1);
 }
 
 .used {
-    background-color: rgb(194, 194, 212);
+    background-color: var(--color2);
 }
 
 .wordboard > .case {
-    color: rgb(122, 122, 148);
+    color: var(--color1);
     background-color: inherit;
+}
+
+.infobar {
+    min-height: 25px;
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 5px;
+
+    border-radius: 4px;
+    border: none;
+
+    text-align: center;
+
+    color: white;
+    background-color: var(--color1);
+}
+
+.gameover {
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+img {
+    height: 100%;
+}
+
+.hanged {
+    min-height: 200px;
+    margin: 5px;
+    border-radius: 4px;
+    background: var(--color1);
 }
