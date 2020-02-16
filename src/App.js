@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Key from './Key'
+import GameTable from './GameTable'
 
 const WORD_COLLECTION = ['Souris', 'Table', 'Shampoo']
 
@@ -76,15 +77,19 @@ class App extends Component {
 
     render() {
         const ALPHABET = 'AZERTYUIOPQSDFGHJKLMWXCVBN'.split('')
+        let {word, letterDiscovered} = this.state
         return (
-            ALPHABET.map((letter, index) => (
-                <Key 
-                    letter={letter} 
-                    key={letter}
-                    used={this.hasBeenUsed(letter)} 
-                    compare={this.compare}
-                />
-            ))
+            <div>
+                <GameTable word={word} letterDiscovered={letterDiscovered}/>
+                {ALPHABET.map((letter) => (
+                    <Key 
+                        letter={letter} 
+                        key={letter}
+                        used={this.hasBeenUsed(letter)} 
+                        compare={this.compare}
+                    />
+                ))}
+            </div>
         )
     }
 }
