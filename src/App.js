@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 import Key from './Key'
-import GameTable from './GameTable'
+import WordBoard from './WordBoard'
+
+import './App.css'
 
 const WORD_COLLECTION = ['Souris', 'Table', 'Shampoo']
 
@@ -79,16 +81,18 @@ class App extends Component {
         const ALPHABET = 'AZERTYUIOPQSDFGHJKLMWXCVBN'.split('')
         let {word, letterDiscovered} = this.state
         return (
-            <div>
-                <GameTable word={word} letterDiscovered={letterDiscovered}/>
-                {ALPHABET.map((letter) => (
-                    <Key 
-                        letter={letter} 
-                        key={letter}
-                        used={this.hasBeenUsed(letter)} 
-                        compare={this.compare}
-                    />
-                ))}
+            <div className="game">
+                <WordBoard word={word} letterDiscovered={letterDiscovered}/>
+                <div className="keyboard">
+                    {ALPHABET.map((letter) => (
+                        <Key 
+                            letter={letter} 
+                            key={letter}
+                            used={this.hasBeenUsed(letter)} 
+                            compare={this.compare}
+                        />
+                    ))}
+                </div>
             </div>
         )
     }

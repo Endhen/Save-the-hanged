@@ -1,0 +1,49 @@
+
+.game {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 300px;
+    margin: auto;
+}
+
+.game > * {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.wordboard {
+    height: 100px;
+    border-radius: 5px;
+    margin: 5px;
+    background-color: rgb(194, 194, 212);
+}
+
+.case {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+
+    padding: 5px;
+    margin: 5px;
+
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(122, 122, 148);
+}
+
+.used {
+    background-color: rgb(194, 194, 212);
+}
+
+.wordboard > .case {
+    color: rgb(122, 122, 148);
+    background-color: inherit;
+}

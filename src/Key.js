@@ -2,8 +2,8 @@ import React from 'react'
 import PorpTypes from 'prop-types'
 
 
-const Key = ({letter, compare}) => (
-    <div className={`key__${letter}`} onClick={() => compare(letter)}>
+const Key = ({letter, compare, used}) => (
+    <div className={`case key_${letter} ${used?'used':''}`} onClick={() => compare(letter)}>
         {letter}
     </div>
 )
